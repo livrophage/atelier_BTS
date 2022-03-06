@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3307
--- Généré le : mar. 01 mars 2022 à 19:47
+-- Généré le : mer. 02 mars 2022 à 15:07
 -- Version du serveur : 10.6.5-MariaDB
 -- Version de PHP : 7.4.26
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `test_atelier_bts`
+-- Base de données : `atelier_bts`
 --
 
 -- --------------------------------------------------------
@@ -31,21 +31,7 @@ DROP TABLE IF EXISTS `commune`;
 CREATE TABLE IF NOT EXISTS `commune` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `nom` char(64) NOT NULL,
-  `id_departement` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_commune_departement_id` (`id_departement`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `departement`
---
-
-DROP TABLE IF EXISTS `departement`;
-CREATE TABLE IF NOT EXISTS `departement` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `nom` int(10) UNSIGNED NOT NULL,
+  `num_departement` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
@@ -60,7 +46,14 @@ CREATE TABLE IF NOT EXISTS `especes` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `nom` char(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Déchargement des données de la table `especes`
+--
+
+INSERT INTO `especes` (`id`, `nom`) VALUES
+(1, 'test');
 
 -- --------------------------------------------------------
 
@@ -178,12 +171,6 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
 --
 -- Contraintes pour les tables déchargées
 --
-
---
--- Contraintes pour la table `commune`
---
-ALTER TABLE `commune`
-  ADD CONSTRAINT `fk_commune_departement_id` FOREIGN KEY (`id_departement`) REFERENCES `departement` (`id`);
 
 --
 -- Contraintes pour la table `groupes`
