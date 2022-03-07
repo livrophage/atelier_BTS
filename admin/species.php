@@ -76,7 +76,7 @@ if (isset($search)) {
                                             <label for='name_" . $l["id"] . "'>Nom</label>
                                         </div>";
                                 modalModificationData($l["id"], "modify_data_specie.php", $token, $input);
-                                modalDelete($l["id"], "delete_specie.php", $token); ?>
+                                modalDelete($l["id"], "delete_specie.php", $token,"La suppression d'une espèce supprime toutes les données qui lui sont associées"); ?>
                             </td>
                         </tr>
                         <?php

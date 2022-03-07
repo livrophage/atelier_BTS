@@ -161,7 +161,7 @@ function modalButton($text, $color, $target) //bouton pour afficher une popup
 }
 
 
-function modalModificationData($id, $modify_page, $token, $form_input) //corps de la popup pour renommer un élément
+function modalModificationData($id, $modify_page, $token, $form_input) //popup pour modifier un/des élément(s)
 {
     echo "<div class='modal fade' id='modal_$id' data-bs-keyboard='false' tabindex='-1' data-bs-backdrop='static'>
     <div class='modal-dialog modal-dialog-centered'>
@@ -186,7 +186,7 @@ function modalModificationData($id, $modify_page, $token, $form_input) //corps d
     </div></div></div>";
 }
 
-function modalDelete($id, $delete_page, $token) //corps de la popup pour supprimer un élément
+function modalDelete($id, $delete_page, $token,$warning_message="La suppression échouera si l'élément est utilisé dans des données") //popup pour supprimer un élément
 {
     echo "<div class='modal fade' id='modal_delete_$id' data-bs-keyboard='false' tabindex='-1' data-bs-backdrop='static'>
     <div class='modal-dialog modal-dialog-centered'>
@@ -201,7 +201,7 @@ function modalDelete($id, $delete_page, $token) //corps de la popup pour supprim
                 <p class='text-danger'>Souhaitez-vous vraiment supprimer l'élément ?
                     <br><br>
                     <span class='far fa-exclamation-triangle'></span>
-                    La suppression échouera si l'élément est utilisé dans des données
+                    ".$warning_message."
                     <span class='far fa-exclamation-triangle'></span></p>
             </div>
             <input type='hidden' name='token' value='$token'>
