@@ -44,8 +44,8 @@
                 <li class="nav-item dropdown me-3">
                     <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Espèces</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="species_list.php">Liste des espèces</a></li>
-                        <li><a class="dropdown-item" href="#">Ajouter une espèce</a></li>
+                        <li><a class="dropdown-item" href="species.php#species_list">Liste des espèces</a></li>
+                        <li><a class="dropdown-item" href="species.php#add_specie">Ajouter une espèce</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown me-3">
