@@ -9,7 +9,6 @@ include_once "database-connection.php";
 include_once "function.php";
 //récupération des données
 $data = getPost(["name","area","town","nbr_department"]);
-var_dump($data);
     if (checkLenString($data["name"], 32) && checkLenString($data["town"],32) && checkInt(intval($data["area"]),1,65535) && checkDepartment($data["nbr_department"])) {
         if (sqlCommand("SELECT count(id) FROM communes WHERE nom LIKE :name AND num_departement LIKE :nbr", [":name" => $data["town"],":nbr"=>$data["nbr_department"]], $conn)[0][0] == 0){
             sqlCommand("INSERT INTO communes (nom, num_departement) VALUES (:name,:number)",[":name"=>$data["town"],":number"=>$data["nbr_department"]],$conn);
