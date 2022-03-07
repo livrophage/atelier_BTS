@@ -30,8 +30,8 @@
                 <li class="nav-item dropdown me-3">
                     <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Plages</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="beach_list.php">Liste des plages</a></li>
-                        <li><a class="dropdown-item" href="#">Ajouter une plage</a></li>
+                        <li><a class="dropdown-item" href="../admin/beach.php#beach_list">Liste des plages</a></li>
+                        <li><a class="dropdown-item" href="../admin/beach.php#add_beach">Ajouter une plage</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown me-3">

@@ -4,8 +4,8 @@ if (isset($search)) {
     $redirect = basename(__FILE__) . "?search=$search";
 }
 
-$token = "aaaaa";
 $title = "Liste des plages";
+include_once "../src/actions/security_token.php";
 include_once "../src/actions/function.php";
 include_once "../src/layout/header.php";
 include_once "../src/config.php";
@@ -32,12 +32,12 @@ $towns = sqlCommand("SELECT * from communes", [], $conn);
             unset($_SESSION["error_message"]);
         } ?>
         <div class="container mt-5">
-            <h1>Gestion/liste des plages</h1>
+            <h1 id="beach_list">Gestion/liste des plages</h1>
             <?php if (isset($search) and $search != "") {
                 echo "<h2>Résultat de la recherche '" . textSafe($search) . "'</h2>";
             }
 
-            searchInput($search, "beach_list.php", "beach_list.php");
+            searchInput($search, "beach.php", "beach.php");
             ?>
             <table class="table table-striped">
                 <thead>
@@ -45,7 +45,7 @@ $towns = sqlCommand("SELECT * from communes", [], $conn);
                     <th></th>
                     <th>Nom</th>
                     <th>Commune</th>
-                    <th>N° département</th>
+                    <th>Département</th>
                     <th>Superficie étudiée (en m²)</th>
                     <th>Action</th>
                 </tr>
@@ -68,7 +68,7 @@ $towns = sqlCommand("SELECT * from communes", [], $conn);
                                 <?= textSafe($l["commune"]) ?>
                             </td>
                             <td>
-                                <?= textSafe($l["departement"]) ?>
+                                <?= textSafe($l["departement"]) ?> - <?= $department_list[$l["departement"]] ?>
                             </td>
                             <td>
                                 <?= textSafe($l["superficie"]) ?>
@@ -76,13 +76,28 @@ $towns = sqlCommand("SELECT * from communes", [], $conn);
                             <td> <!-- option applicable à la plage enregistrée dans la base de donnée-->
                                 <div class="btn-group">
                                     <?php
-                                    modalButton("<span class='fas fa-edit'></span>", "success", "modal_rename_" . $l['id']); //bouton modifier nom plage
+                                    modalButton("<span class='fas fa-edit'></span>", "success", "modal_" . $l['id']); //bouton modifier nom plage
                                     modalButton("<span class='fas fa-trash'></span>", "danger", "modal_delete_" . $l['id']); //bouton supprimer plage
                                     ?>
                                 </div>
 
-                                <?php modalRename($l["id"], "#", $token);
-                                modalDelete($l["id"], "#", $token); ?>
+                                <?php
+                                $input = "<div class='form-floating mb-3'>
+                                            <input type='text' placeholder='Nom' name='new_name'
+                                                   id='name_" . $l["id"] . "' class='form-control'
+                                                   maxlength='32' value='".$l["nom"]."' required>
+                                            <label for='name_" . $l["id"] . "'>Nom</label>
+                                        </div>
+                                        <div class='form-floating'>
+                                            <input type='number' name='area' placeholder='superficie' id='input_area_".$l["id"]."'
+                                                   class='form-control' max='65535' min='1' value='".$l["superficie"]."' required>
+                                            <label for='input_area_".$l["id"]."'>Superficie étudiée (en m²)</label>
+                                            <div class='invalid-feedback'>
+                                                La superficie étudiée doit être entre 1 et 65535 m²
+                                            </div>
+                                        </div>";
+                                modalModificationData($l["id"], "modify_data_beach.php", $token, $input);
+                                modalDelete($l["id"], "delete_beach.php", $token); ?>
                             </td>
                         </tr>
                         <?php
@@ -95,7 +110,7 @@ $towns = sqlCommand("SELECT * from communes", [], $conn);
             <hr>
             <div> <!-- ajout d'une nouvelle plage dans la base de donnée-->
                 <h2 class="mt-5" id="add_beach">Ajouter une plage</h2>
-                <form action="../src/actions/insert_beach.php" method="POST" class="mt-4 needs-validation w-50"
+                <form action="../src/actions/add_beach.php" method="POST" class="mt-4 needs-validation w-50"
                       novalidate>
                     <div class="row g-2 mb-2">
                         <div class="col-md">
@@ -119,12 +134,12 @@ $towns = sqlCommand("SELECT * from communes", [], $conn);
                         </div>
                     </div>
                     <div class="form-floating mb-3">
-                        <input class="form-control" list="datalistTown" id="town" placeholder="commune"
+                        <input class="form-control" list="datalistTown" id="town" placeholder="commune" name="town"
                                maxlength="32" required>
                         <datalist id="datalistTown">
                             <?php
                             foreach ($towns as $town) {
-                                echo "<option value=" . $town['nom'] . ">";
+                                echo "<option value='" . $town['nom'] . "'>";
                             } ?>
                         </datalist>
                         <label for="town">Nom de la commune</label>
@@ -135,18 +150,18 @@ $towns = sqlCommand("SELECT * from communes", [], $conn);
                                 <input class="form-control" list="departmentName" id="department"
                                        placeholder="Département" required pattern="<?php
                                 $first_item = true;
-                                foreach ($department_list as $d){
-                                    if ($first_item == false){
+                                foreach ($department_list as $d) {
+                                    if ($first_item == false) {
                                         echo "|";
-                                    }else{
+                                    } else {
                                         $first_item = false;
                                     }
                                     echo "$d";
                                 } ?>">
                                 <datalist id="departmentName">
                                     <?php
-                                    foreach ($department_list as $d){
-                                        echo "<option value='".$d."'>";
+                                    foreach ($department_list as $d) {
+                                        echo '<option value="' . $d . '">';
                                     }
                                     ?>
                                 </datalist>
@@ -158,23 +173,23 @@ $towns = sqlCommand("SELECT * from communes", [], $conn);
                         </div>
                         <div class="col-md-5">
                             <div class="form-floating">
-                                <input class="form-control" id="nbr_department" list="departmentNumber"
+                                <input class="form-control" id="nbr_department" list="departmentNumber" name="nbr_department"
                                        placeholder="n° département" maxlength="4" required
-                                pattern="<?php
-                                $first_item = true;
-                                foreach (array_keys($department_list) as $d){
-                                    if ($first_item == false){
-                                        echo "|";
-                                    }else{
-                                        $first_item = false;
-                                    }
-                                    echo "$d";
-                                } ?>">
+                                       pattern="<?php
+                                       $first_item = true;
+                                       foreach (array_keys($department_list) as $d) {
+                                           if ($first_item == false) {
+                                               echo "|";
+                                           } else {
+                                               $first_item = false;
+                                           }
+                                           echo "$d";
+                                       } ?>">
                                 <label for="nbr_department">n° département</label>
                                 <datalist id="departmentNumber">
                                     <?php
-                                    foreach (array_keys($department_list) as $d){
-                                        echo "<option value='".$d."'>";
+                                    foreach (array_keys($department_list) as $d) {
+                                        echo "<option value='" . $d . "'>";
                                     }
                                     ?>
                                 </datalist>
@@ -224,37 +239,44 @@ $towns = sqlCommand("SELECT * from communes", [], $conn);
                 }
                 input_nbr_department.value = list_towns.get(town);
                 updateDepartmentName();
-                input_nbr_department.setAttribute("disabled", "");
-                input_department.setAttribute("disabled", "");
+                input_nbr_department.setAttribute("readonly", "");
+                input_department.setAttribute("readonly", "");
             } else {
                 if (value_auto_change === true) {
                     input_nbr_department.value = last_value_department_nbr;
                     updateDepartmentName();
                 }
-                input_nbr_department.removeAttribute("disabled");
-                input_department.removeAttribute("disabled");
+                input_nbr_department.removeAttribute("readonly");
+                input_department.removeAttribute("readonly");
             }
         });
 
 
-        function updateDepartmentName(){
-            if (list_department_inversed.has(input_nbr_department.value)){
+        function updateDepartmentName() {
+            input_nbr_department.value = input_nbr_department.value.toUpperCase();
+            if (list_department_inversed.has(input_nbr_department.value)) {
                 input_department.value = list_department_inversed.get(input_nbr_department.value);
-            }else{
+            } else {
                 input_department.value = "";
             }
         }
 
-        function updateDepartmentNbr(){
-            if (list_department.has(input_department.value)){
+        function updateDepartmentNbr() {
+            if (input_department.value.length !== 0) {
+                while (input_department.value.charAt(0) === " ") {
+                    input_department.value = input_department.value.slice(1);
+                }
+                input_department.value = input_department.value.charAt(0).toUpperCase() + input_department.value.slice(1);
+            }
+            if (list_department.has(input_department.value)) {
                 input_nbr_department.value = list_department.get(input_department.value);
-            }else{
+            } else {
                 input_nbr_department.value = "";
             }
         }
 
-        input_nbr_department.addEventListener("input",updateDepartmentName);
-        input_department.addEventListener("input",updateDepartmentNbr);
+        input_nbr_department.addEventListener("input", updateDepartmentName);
+        input_department.addEventListener("input", updateDepartmentNbr);
     </script>
 <?php
 include "../src/layout/footer.php";

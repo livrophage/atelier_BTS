@@ -103,7 +103,6 @@ $department_list['971'] = 'Guadeloupe';
 $department_list['972'] = 'Martinique';
 $department_list['973'] = 'Guyane';
 $department_list['974'] = 'Réunion';
-$department_list['975'] = 'Saint Pierre et Miquelon';
 $department_list['976'] = 'Mayotte';
 return $department_list;
 
@@ -162,23 +161,18 @@ function modalButton($text, $color, $target) //bouton pour afficher une popup
 }
 
 
-function modalRename($id, $modify_page, $token) //corps de la popup pour renommer un élément
+function modalModificationData($id, $modify_page, $token, $form_input) //corps de la popup pour renommer un élément
 {
-    echo "<div class='modal fade' id='modal_rename_$id' data-bs-keyboard='false' tabindex='-1' data-bs-backdrop='static'>
+    echo "<div class='modal fade' id='modal_$id' data-bs-keyboard='false' tabindex='-1' data-bs-backdrop='static'>
     <div class='modal-dialog modal-dialog-centered'>
         <div class='modal-content'>
 <form action='../src/actions/$modify_page' class='needs-validation' method='post' novalidate>
         <div class='modal-header'>
-            <h5 class='modal-title'>Modifier le nom de l'élément</h5>
+            <h5 class='modal-title'>Modifier l'élément</h5>
             <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
         </div>
         <div class='modal-body'>
-            <div class='form-floating'>
-                <input type='text' placeholder='Nom' name='new_name'
-                       id='new_name_$id' class='form-control'
-                       maxlength='30' required>
-                <label for='new_name_$id'>Nouveau nom</label>
-            </div>
+            ".$form_input."
             <input type='hidden' name='token' value='$token'>
             <input type='hidden' name='id' value='$id'>
         </div>
@@ -221,4 +215,26 @@ function modalDelete($id, $delete_page, $token) //corps de la popup pour supprim
         </div>
     </form>
     </div></div></div>";
+}
+
+function getPost($args) //récupères toutes les données envoyées en post portant dont le nom est entrée en paramètre
+{
+    $result = [];
+    foreach ($args as $varName) {
+        $result[$varName] = filter_input(INPUT_POST, $varName);
+    }
+    return $result;
+}
+
+function checkDepartment($nbr_department){
+    return preg_match("/^([02][1-9]|2[AB]|(1|[3-8])[0-9]|9[0-5]|97[12346])$/",$nbr_department);
+}
+
+function checkLenString($valueCheck, $length_max, $length_min = 1) //vérifie la longueur d'une chaîne de caractère
+{
+    return strlen($valueCheck) <= $length_max && strlen($valueCheck) >= $length_min;
+}
+
+function checkInt($value,$min,$max){ //vérifie la valeur d'un int
+    return ($value>=$min and ($value<=$max or $max==0) and is_int($value));
 }
