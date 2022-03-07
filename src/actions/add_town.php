@@ -1,7 +1,7 @@
 <?php
 include_once "check_security_token.php";
 $redirect = "town.php";//page redirection après la connexion de l'utilisateur s'il n'était pas encore connecté
-$message = "Suite à une erreur, les données n'ont pas pu être modifié, veuillez recommencer";//message d'erreur après la connexion de l'utilisateur s'il n'était pas encore connecté
+$message = "Suite à une erreur, les données n'ont pas pu être enregistrées, veuillez recommencer";//message d'erreur après la connexion de l'utilisateur s'il n'était pas encore connecté
 
 //connection à la base de donnée
 include_once "../config.php";
