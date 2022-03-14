@@ -239,6 +239,10 @@ function checkInt($value,$min,$max){ //vérifie la valeur d'un int
     return ($value>=$min and ($value<=$max or $max==0) and is_int($value));
 }
 
+function checkEmail($email){ //vérifie s'il s'agit d'une adresse mail
+    return (filter_var($email,FILTER_VALIDATE_EMAIL));
+}
+
 function navbarDropdown($title,$dropdowns,$page){
     echo "<li class='nav-item dropdown me-3'>
               <a class='nav-link "; if (preg_match("/{$page}/i",$dropdowns[0][1])){echo "active ";}
@@ -259,6 +263,10 @@ function navbarLink($title,$link,$page){
 
 function isAdmin(){
     return in_array($_SESSION["user_type"],["superadministrateur","administrateur"]);
+}
+
+function isSuperadmin(){
+    return $_SESSION["user_type"]=="superadministrateur";
 }
 
 function printIfAdmin($ifTrue,$ifFalse=""){

@@ -12,7 +12,6 @@ include_once "../src/actions/function.php";
 include_once "../src/layout/header.php";
 include_once "../src/config.php";
 include_once "../src/actions/database-connection.php";
-var_dump($_SESSION);
 
 
 // Listing des espèces déjà enregistrées dans la base de donnée
