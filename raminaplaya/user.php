@@ -46,13 +46,32 @@ if (isAdmin() == false) {
                                maxlength="320" required  value="' . $default_value[2] . '"
                                pattern="^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$">
                         <label for="firstname_' . $id . '">Email</label>
-                    </div>
-                    <div class="form-floating mb-3">
+                    </div>';
+        if ($id == "add_user") {
+            $input .= '<div class="row">
+                        <div class="col-md">
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" id="password" placeholder="mot de passe" name="password"
+                                       maxlength="128" minlength="8" required>
+                                <label for="password">Mot de passe</label>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" id="confirm_password" placeholder="confirmation mot de passe"
+                                       maxlength="128" minlength="8" required pattern="">
+                                <label for="confirm_password">Confirmation mot de passe</label>
+                                <div class="invalid-feedback">Les mots de passes ne correspondent pas</div>
+                            </div>
+                        </div>
+                    </div>';
+        }
+        $input .= '<div class="form-floating mb-3">
                         <select class="form-select" id="user_type_' . $id . '" name="user_type" required>';
 
 
         foreach (["utilisateur", "administrateur", "superadministrateur"] as $type) {
-            if (isSuperadmin()==false and $type=="superadministrateur"){
+            if (isSuperadmin() == false and $type == "superadministrateur") {
                 $input .= '<option value=' . $type . ' disabled>' . $type . '</option>';
             } else if ($default_value[3] == $type) {
                 $input .= '<option value=' . $type . ' selected>' . $type . '</option>';
@@ -162,6 +181,13 @@ if (isAdmin() == false) {
     </section>
     <script>
         <?php jsFormValidatation(); ?>
+        const inputPWD = document.getElementById("password");
+        const inputConfirmPWD = document.getElementById("confirm_password");
+        inputPWD.addEventListener('change', (event) => {
+            console.log(1);
+            let patternPWD = String(inputPWD.value);
+            inputConfirmPWD.setAttribute("pattern",patternPWD);
+        });
     </script>
     <?php
     include "../src/layout/footer.php";

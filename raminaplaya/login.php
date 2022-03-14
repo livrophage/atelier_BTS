@@ -50,7 +50,6 @@ if (isset($_SESSION["error_message_connection"])){//vérifie si une erreur est s
                     <span class="fas fa-sign-in-alt"></span> Se connecter
                 </button>
             </form>
-
         </div>
     </div>
 </main>
