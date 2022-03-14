@@ -17,4 +17,4 @@ $data = getPost(["town","nbr_department"]);
         $_SESSION["error"] = true; //erreur
         $_SESSION["error_message"] = "Impossible d'ajouter cette commune, les données ne sont pas valides";
     }
-    header("location: ../../admin/town.php");//retour à la liste des communes
+    header("location: ../../raminaplaya/town.php");//retour à la liste des communes

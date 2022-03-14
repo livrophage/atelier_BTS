@@ -23,5 +23,5 @@ $message = "Suite à une erreur, la commune n'a pas pu être supprimée, veuille
         $_SESSION["error"] = true; //erreur
         $_SESSION["error_message"] = "Impossible de supprimer cette commune, les données ne sont pas valides";
     }
-    header("location: ../../admin/town.php");//retour à la page
+    header("location: ../../raminaplaya/town.php");//retour à la page
 

@@ -18,5 +18,5 @@ if (sqlCommand("SELECT count(id) FROM especes WHERE id=:id", [":id" => $id], $co
     $_SESSION["error"] = true; //erreur
     $_SESSION["error_message"] = "Impossible de supprimer cette espèce, les données ne sont pas valides";
 }
-header("location: ../../admin/species.php");//retour à la page
+header("location: ../../raminaplaya/species.php");//retour à la page
 

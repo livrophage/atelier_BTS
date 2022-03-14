@@ -21,4 +21,4 @@ $data = getPost(["name","area","town","nbr_department"]);
         $_SESSION["error"] = true; //erreur
         $_SESSION["error_message"] = "Impossible d'ajouter cette plage, les données ne sont pas valides";
     }
-    header("location: ../../admin/beach.php");//retour à la page
+    header("location: ../../raminaplaya/beach.php");//retour à la page

@@ -17,4 +17,4 @@ $data = getPost(["specie"]);
         $_SESSION["error"] = true; //erreur
         $_SESSION["error_message"] = "Impossible d'ajouter cette espèce, les données ne sont pas valides";
     }
-    header("location: ../../admin/species.php");//retour à la liste des espèces
+    header("location: ../../raminaplaya/species.php");//retour à la liste des espèces

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3307
--- Généré le : mer. 02 mars 2022 à 15:07
+-- Généré le : lun. 14 mars 2022 à 14:35
 -- Version du serveur : 10.6.5-MariaDB
 -- Version de PHP : 7.4.26
 
@@ -24,13 +24,13 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Structure de la table `commune`
+-- Structure de la table `communes`
 --
 
-DROP TABLE IF EXISTS `commune`;
-CREATE TABLE IF NOT EXISTS `commune` (
+DROP TABLE IF EXISTS `communes`;
+CREATE TABLE IF NOT EXISTS `communes` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `nom` char(64) NOT NULL,
+  `nom` varchar(32) NOT NULL,
   `num_departement` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -44,16 +44,9 @@ CREATE TABLE IF NOT EXISTS `commune` (
 DROP TABLE IF EXISTS `especes`;
 CREATE TABLE IF NOT EXISTS `especes` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `nom` char(255) NOT NULL,
+  `nom` varchar(32) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
-
---
--- Déchargement des données de la table `especes`
---
-
-INSERT INTO `especes` (`id`, `nom`) VALUES
-(1, 'test');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -64,7 +57,7 @@ INSERT INTO `especes` (`id`, `nom`) VALUES
 DROP TABLE IF EXISTS `etudes`;
 CREATE TABLE IF NOT EXISTS `etudes` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `nom` char(32) NOT NULL,
+  `nom` varchar(32) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
@@ -81,11 +74,11 @@ CREATE TABLE IF NOT EXISTS `groupes` (
   `id_plage` int(10) UNSIGNED NOT NULL,
   `nbr_personnes` tinyint(3) UNSIGNED NOT NULL,
   `date` datetime NOT NULL,
-  `coordonnee_depart_1` char(32) NOT NULL,
-  `coordonnee_depart_2` char(32) NOT NULL,
-  `coordonnee_arrivee_1` char(32) NOT NULL,
-  `coordonnee_arrivee_2` char(32) NOT NULL,
-  `nom` char(32) NOT NULL,
+  `coordonnee_depart_1` varchar(32) NOT NULL,
+  `coordonnee_depart_2` varchar(32) NOT NULL,
+  `coordonnee_arrivee_1` varchar(32) NOT NULL,
+  `coordonnee_arrivee_2` varchar(32) NOT NULL,
+  `nom` varchar(32) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_groupes_etude_id` (`id_etude`),
   KEY `fk_groupes_plage_id` (`id_plage`)
@@ -114,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `groupe_utilisateur` (
 DROP TABLE IF EXISTS `plages`;
 CREATE TABLE IF NOT EXISTS `plages` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `nom` char(32) NOT NULL,
+  `nom` varchar(32) NOT NULL,
   `id_commune` int(10) UNSIGNED NOT NULL,
   `superficie_etude` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
@@ -159,11 +152,11 @@ CREATE TABLE IF NOT EXISTS `prelevements` (
 DROP TABLE IF EXISTS `utilisateur`;
 CREATE TABLE IF NOT EXISTS `utilisateur` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `email` char(64) NOT NULL,
-  `mdp` char(128) NOT NULL,
-  `type_utilisateur` char(16) NOT NULL,
-  `nom` char(32) NOT NULL,
-  `prenom` char(32) NOT NULL,
+  `email` varchar(64) NOT NULL,
+  `mdp` varchar(128) NOT NULL,
+  `type_utilisateur` varchar(32) NOT NULL,
+  `nom` varchar(32) NOT NULL,
+  `prenom` varchar(32) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -176,35 +169,35 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
 -- Contraintes pour la table `groupes`
 --
 ALTER TABLE `groupes`
-  ADD CONSTRAINT `fk_groupes_prelevement_etude_id` FOREIGN KEY (`id_etude`) REFERENCES `etudes` (`id`),
+  ADD CONSTRAINT `fk_groupes_prelevement_etude_id` FOREIGN KEY (`id_etude`) REFERENCES `etudes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_groupes_prelevement_plage_id` FOREIGN KEY (`id_plage`) REFERENCES `plages` (`id`);
 
 --
 -- Contraintes pour la table `groupe_utilisateur`
 --
 ALTER TABLE `groupe_utilisateur`
-  ADD CONSTRAINT `fk_groupe-utilisateur_groupe_id` FOREIGN KEY (`groupe_id`) REFERENCES `groupes` (`id`),
+  ADD CONSTRAINT `fk_groupe-utilisateur_groupe_id` FOREIGN KEY (`groupe_id`) REFERENCES `groupes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_groupe-utilisateur_utilisateur_id` FOREIGN KEY (`utilisateur_id`) REFERENCES `utilisateur` (`id`);
 
 --
 -- Contraintes pour la table `plages`
 --
 ALTER TABLE `plages`
-  ADD CONSTRAINT `fk_plages_id_commune` FOREIGN KEY (`id_commune`) REFERENCES `commune` (`id`);
+  ADD CONSTRAINT `fk_plages_id_commune` FOREIGN KEY (`id_commune`) REFERENCES `communes` (`id`);
 
 --
 -- Contraintes pour la table `plages_etude`
 --
 ALTER TABLE `plages_etude`
-  ADD CONSTRAINT `fk_plage-etude_etude_id` FOREIGN KEY (`id_etude`) REFERENCES `etudes` (`id`),
+  ADD CONSTRAINT `fk_plage-etude_etude_id` FOREIGN KEY (`id_etude`) REFERENCES `etudes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_plage-etude_plage_id` FOREIGN KEY (`id_plage`) REFERENCES `plages` (`id`);
 
 --
 -- Contraintes pour la table `prelevements`
 --
 ALTER TABLE `prelevements`
-  ADD CONSTRAINT `fk_prelevements_especes_id` FOREIGN KEY (`espece_id`) REFERENCES `especes` (`id`),
-  ADD CONSTRAINT `fk_prelevements_groupe_id` FOREIGN KEY (`groupe_id`) REFERENCES `groupes` (`id`);
+  ADD CONSTRAINT `fk_prelevements_especes_id` FOREIGN KEY (`espece_id`) REFERENCES `especes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_prelevements_groupe_id` FOREIGN KEY (`groupe_id`) REFERENCES `groupes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -238,3 +238,33 @@ function checkLenString($valueCheck, $length_max, $length_min = 1) //vérifie la
 function checkInt($value,$min,$max){ //vérifie la valeur d'un int
     return ($value>=$min and ($value<=$max or $max==0) and is_int($value));
 }
+
+function navbarDropdown($title,$dropdowns,$page){
+    echo "<li class='nav-item dropdown me-3'>
+              <a class='nav-link "; if (preg_match("/{$page}/i",$dropdowns[0][1])){echo "active ";}
+    echo "dropdown-toggle' href='#' data-bs-toggle='dropdown' aria-expanded='false'>$title</a>
+              <ul class='dropdown-menu'>";
+    foreach ($dropdowns as $dropdown){
+        echo "<li><a class='dropdown-item' href='$dropdown[1]'>$dropdown[0]</a></li>";
+    }
+    echo "</ul></li>";
+}
+
+function navbarLink($title,$link,$page){
+    echo "<li class='nav-item'>
+          <a class='nav-link "; if (preg_match("/{$page}/i",$link)){echo "active";}
+    echo "' href='$link'>$title</a>
+    </li>";
+}
+
+function isAdmin(){
+    return in_array($_SESSION["user_type"],["superadministrateur","administrateur"]);
+}
+
+function printIfAdmin($ifTrue,$ifFalse=""){
+    if (isAdmin()){
+        echo $ifTrue;
+    }else{
+        echo $ifFalse;
+    }
+}

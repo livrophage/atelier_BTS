@@ -24,5 +24,5 @@ $message = "Suite à une erreur, la plage n'a pas pu être supprimée, veuillez 
         $_SESSION["error"] = true; //erreur
         $_SESSION["error_message"] = "Impossible de supprimer cette plage, les données ne sont pas valides";
     }
-    header("location: ../../admin/beach.php");//retour à la page
+    header("location: ../../raminaplaya/beach.php");//retour à la page
 

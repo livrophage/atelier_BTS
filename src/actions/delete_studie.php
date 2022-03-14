@@ -10,12 +10,11 @@ $message = "Suite à une erreur, l'études et ses données n'ont pas pu être su
     $id = filter_input(INPUT_POST, "id");
 
     if (sqlCommand("SELECT count(id) FROM etudes WHERE id=:id", [":id" => $id], $conn)[0][0] == 1) { //vérification si l'id de l'étude existe
-            sqlCommand("DELETE FROM plages WHERE id=:id", [":id" => $id], $conn, false);
+            sqlCommand("DELETE FROM etudes WHERE id=:id", [":id" => $id], $conn, false);
             $_SESSION["error"] = false; //succès
             $_SESSION["error_message"] = "étude supprimée avec succès";
     } else {
         $_SESSION["error"] = true; //erreur
         $_SESSION["error_message"] = "Impossible de supprimer cette étude, les données ne sont pas valides";
     }
-    header("location: ../../admin/studies.php");//retour à la page
-
+    header("location: ../../raminaplaya/studies.php");//retour à la page

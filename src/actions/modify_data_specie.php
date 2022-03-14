@@ -21,4 +21,4 @@ $message = "Suite à une erreur, les données n'ont pas pu être modifié, veuil
         $_SESSION["error"] = true;//erreur
         $_SESSION["error_message"] = "Impossible de modifier les données, elles ne sont pas valide";
     }
-    header("location: ../../admin/species.php");//retour à la page
+    header("location: ../../raminaplaya/species.php");//retour à la page
