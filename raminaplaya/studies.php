@@ -71,8 +71,8 @@ if (isset($search)) {
                             <?php if (isAdmin()){ ?>
                             <td> <!-- option applicable à l'étude enregistrée dans la base de donnée-->
                                 <div class="btn-grou">
-                                    <a href="#" class="btn btn-success"><span class='fas fa-database'></span></a>
-                                    <a href="studie.php?id=<?= $l['id'] ?>" class="btn btn-danger"><span class='fas fa-edit'></span></a>
+                                    <a href="study_data.php?id=<?= $l["id"] ?>" class="btn btn-success"><span class='fas fa-database'></span></a>
+                                    <a href="study.php?id=<?= $l['id'] ?>" class="btn btn-danger"><span class='fas fa-edit'></span></a>
                                     <?php modalButton("<span class='fas fa-trash'></span>", "danger", "modal_delete_" . $l['id']); //bouton supprimer étude ?>
                                 </div>
                                 <?php

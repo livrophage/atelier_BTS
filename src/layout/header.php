@@ -42,7 +42,7 @@ if ($navbar){
                     navbarDropdown("Plages",[["Liste des plages","beach.php#beach_list"],["Ajouter une plage","beach.php#add_beach"]],$page);
                     navbarDropdown("Communes",[["Liste des communes","town.php#town_list"],["Ajouter une communes","town.php#add_town"]],$page);
                     navbarDropdown("Espèces",[["Liste des espèces","species.php#species_list"],["Ajouter une espèce","species.php#add_specie"]],$page);
-                    navbarDropdown("Études",[["Liste des études","studies.php"],["Nouvelle études","studie.php"]],$page);
+                    navbarDropdown("Études",[["Liste des études","studies.php"],["Nouvelle études","study.php"]],$page);
                 }else {
                     navbarLink("Plages", "beach.php",$page);
                     navbarLink("Communes", "town.php",$page);

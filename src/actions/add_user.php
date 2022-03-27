@@ -23,4 +23,4 @@ if (checkLenString($data["name"], 32) && checkLenString($data["firstname"], 32) 
     $_SESSION["error"] = true; //erreur
     $_SESSION["error_message"] = "Impossible d'ajouter cet utilisateur, les données ne sont pas valides";
 }
-//header("location: ../../raminaplaya/user.php");//retour à la liste des communes
+header("location: ../../raminaplaya/user.php");//retour à la liste des communes

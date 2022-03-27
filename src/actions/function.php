@@ -1,6 +1,7 @@
 <?php
 
 // Tableau des départements français !
+const EARTH_RADIUS = 6378137;
 
 $department_list = array();
 $department_list['01'] = 'Ain';
@@ -276,3 +277,52 @@ function printIfAdmin($ifTrue,$ifFalse=""){
         echo $ifFalse;
     }
 }
+
+function degreeToRadian($value){
+    return $value*M_PI/180;
+}
+
+function getDmsData($dms){
+    return preg_split('/[°"\']/',$dms,4,PREG_SPLIT_NO_EMPTY);
+}
+
+function dmsDeleteCardinalPoint($dms){
+    $dms_data = getDmsData($dms);
+    if (isset($dms_data[3]) and strpos("sSoO",$dms_data[3])){
+        $dms_data[0]="-".$dms_data[0];
+    }
+    return array_slice($dms_data,0,3);
+}
+
+function dmsToDecimal($dms){
+    $dms_data = dmsDeleteCardinalPoint($dms);
+    $coord_minute_seconde = (floatval($dms_data[1])+floatval($dms_data[2])/60)/60;
+    $coord_degree = floatval($dms_data[0]);
+    if ($coord_degree < 0){
+        return round($coord_degree-$coord_minute_seconde,7);
+    }else{
+        return round($coord_degree+$coord_minute_seconde,7);
+    }
+}
+
+function distanceGPS($latitude1,$longitude1,$latitude2,$longitude2){
+    return acos(sin(degreeToRadian($latitude1))*sin(degreeToRadian($latitude2))+cos(degreeToRadian($latitude1))*cos(degreeToRadian($latitude2))*cos(degreeToRadian($longitude1)-degreeToRadian($longitude2)))*EARTH_RADIUS;//distance entre 2 points sur Terre
+
+}
+
+function areaCalculGPS($latitude_A, $longitude_A, $latitude_B, $longitude_B, $latitude_C, $longitude_C, $latitude_D, $longitude_D){
+    $length_ab = distanceGPS($latitude_A,$longitude_A,$latitude_B,$longitude_B);
+    $length_bd = distanceGPS($latitude_B,$longitude_B,$latitude_D,$longitude_D);
+    $length_dc = distanceGPS($latitude_D,$longitude_D,$latitude_C,$longitude_C);
+    $length_ca = distanceGPS($latitude_C,$longitude_C,$latitude_A,$longitude_A);
+    $diagonal_ad = distanceGPS($latitude_A,$longitude_A,$latitude_D,$longitude_D);
+
+    $_triangle_abd=($length_ab+$length_bd+$diagonal_ad)/2;
+    $s_triangle_dca=($length_dc+$length_ca+$diagonal_ad)/2;
+    return sqrt($_triangle_abd*($_triangle_abd-$length_ab)*($_triangle_abd-$length_bd)*($_triangle_abd-$diagonal_ad))
+        +sqrt($s_triangle_dca*($s_triangle_dca-$length_dc)*($s_triangle_dca-$length_ca)*($s_triangle_dca-$diagonal_ad));//formule de Heron
+}
+
+
+
+?>

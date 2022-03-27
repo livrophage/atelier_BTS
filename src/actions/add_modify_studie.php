@@ -81,19 +81,16 @@ if (isset($data_post["studie_id"])) { //message d'erreur après la connexion de 
                     $delete_beach_form[] = $id;
                 }
             }
-            echo "1";
             if (isset($delete_beach_form) == true) {
                 foreach ($delete_beach_form as $value) {//supprime l'association de la plage et de l'étude
                     sqlCommand("DELETE FROM plages_etude WHERE id_etude=:id_studie AND id_plage = :id_beach", ["id_studie" => $data_post["studie_id"], "id_beach" => $value], $conn, false);
                 }
             }
-            echo "2";
             foreach ($beach as $s) {
                 if (in_array($s, $beach_studie_id) == false) {//créer une association entre la plage et l'étude
                     sqlCommand("INSERT INTO plages_etude (id_plage, id_etude) VALUES (:id_beach,:id_studie)", ["id_studie" => $data_post["studie_id"], "id_beach" => $s], $conn, false);
                 }
             }
-            echo "3aaaaaaaaaaaaaaa";
             $_SESSION["id_studie"] = $data_post["studie_id"];
             $_SESSION["error_message"] = "étude modifier avec succès";
         }
